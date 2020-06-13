@@ -6,15 +6,17 @@ require('./functions.date.js');
 console.log(new Date().toISOString());
 console.log(new Date().toISOStringOffset());
 
-module.exports.INFO = 0;
-module.exports.ERROR = 1;
-module.exports.MSG = 2;
-module.exports.DEBUG = 3;
-module.exports.WEBSERVER = 4;
-module.exports.SQL = 5;
-module.exports.FATAL_ERROR = 6;
-module.exports.UNCAUGHT_EXCEPTION = 7;
-module.exports.WARNING = 8;
+module.exports.DEBUG = 'debug';
+module.exports.INFO = 'info';
+module.exports.WARNING = 'warning';
+module.exports.ERROR = 'error';
+module.exports.FATAL_ERROR = 'fatal error';
+
+module.exports.MSG = 'message';
+module.exports.WEBSERVER = 'webserver';
+module.exports.SQL = 'sql';
+
+module.exports.UNCAUGHT_EXCEPTION = 'uncaught exception';
 
 let PARAMS = {
 	fileExtension: 'log',
@@ -68,8 +70,6 @@ const baseLogFileFormat = '{date}';
 const fileExtension = 'log';
 const defaultLogData = {
 	fileFormat: '{date}',
-	messageFormat: '{message}',
-	messageSuffix: '',
 	toMainLog: true,
 	console: true,
 	quit: false,
@@ -88,13 +88,11 @@ const logsData = {
 	},
 	[this.FATAL_ERROR]: {
 		fileFormat: '{date}_error',
-		messageFormat: '[FATAL ERROR] {message}',
 		color: '\x1b[31m', // red
 		quit: true,
 	},
 	[this.UNCAUGHT_EXCEPTION]: {
 		fileFormat: '{date}_exception',
-		messageFormat: '[UNCAUGHT EXCEPTION] {message}',
 		color: '\x1b[31m', // red
 	},
 	[this.MSG]: {
@@ -152,15 +150,11 @@ module.exports.warning = function (msg, parameters) {
  * - overwrite with values set by specific severity (if any)
  * - overwrite with values set externally (if any)
  *
- * @param {number} severity
+ * @param {string} severity
  * @param {{}} [customParams]
  * @returns {{}}
  */
 function defineLogParameters(severity, customParams) {
-	if (typeof severity === 'undefined') {
-		// set default severity if not set
-		severity = module.exports.INFO;
-	}
 	// do not override default object, create new instead and merge new parameters
 	let logParams = Object.assign({}, defaultLogData, logsData[severity]);
 	logParams['severity'] = severity;
@@ -176,19 +170,24 @@ function defineLogParameters(severity, customParams) {
  * Log to console and/or file
  *
  * @param message
- * @param {number} severity
+ * @param {string} severity
  * @param {{}} [params]
  */
 module.exports.log = function (message, severity, params) {
 	if (PARAMS.logsPath === null) {
 		throw new Error('Base folder where to save logs has to be absolute path. Run setup({path: "/some/absolute/path/"}) first.');
 	}
+	if (typeof severity === 'undefined') {
+		// set default severity if not set
+		severity = module.exports.INFO;
+	}
 
 	const logParams = defineLogParameters(severity, params);
 	const now = new Date();
 	const contentJson = {
 		datetime: now.toISOStringOffset(true),
-		content: logParams.messageFormat.formatUnicorn({'message': message}),
+		severity: severity,
+		content: message,
 	}
 	const content = JSON.stringify(contentJson);
 

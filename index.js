@@ -10,4 +10,4 @@ LOG.error('error log');
 LOG.msg('msg log');
 LOG.webserver('webserver log');
 LOG.sql('webserver log');
-// LOG.fatal('webserver log');
+LOG.fatal('webserver log');
