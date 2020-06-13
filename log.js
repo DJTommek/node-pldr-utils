@@ -30,7 +30,7 @@ let PARAMS = {
  * @param {{}} params
  * @returns {self}
  */
-module.exports.setup = function (params = {}) {
+module.exports.init = function (params = {}) {
 	// Required parameter "path"
 	if (typeof params.path !== 'string' || PATH.isAbsolute(PATH.join(params.path)) === false) {
 		throw new TypeError('Base folder where to save logs has to be absolute path.');
@@ -175,7 +175,7 @@ function defineLogParameters(severity, customParams) {
  */
 module.exports.log = function (message, severity, params) {
 	if (PARAMS.logsPath === null) {
-		throw new Error('Base folder where to save logs has to be absolute path. Run setup({path: "/some/absolute/path/"}) first.');
+		throw new Error('Base folder where to save logs has to be absolute path. Run init({path: "/some/absolute/path/"}) first.');
 	}
 	if (typeof severity === 'undefined') {
 		// set default severity if not set

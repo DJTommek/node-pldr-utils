@@ -1,4 +1,4 @@
-const LOG = require('./log.js').setup({path: __dirname + '/'});
+const LOG = require('./log.js').init({path: __dirname + '/'});
 
 
 LOG.log('default log');
