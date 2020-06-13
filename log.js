@@ -187,7 +187,7 @@ module.exports.log = function (message, severity, params) {
 	const logParams = defineLogParameters(severity, params);
 	const now = new Date();
 	const contentJson = {
-		datetime: now.toISOStringOffset(),
+		datetime: now.toISOStringOffset(true),
 		content: logParams.messageFormat.formatUnicorn({'message': message}),
 	}
 	const content = JSON.stringify(contentJson);

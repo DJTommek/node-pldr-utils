@@ -4,21 +4,26 @@
  * @author https://stackoverflow.com/a/17415677/3334403
  * @return {string}
  */
-Date.prototype.toISOStringOffset = function () {
-	const tzo = -this.getTimezoneOffset();
-	const dif = tzo >= 0 ? '+' : '-';
+Date.prototype.toISOStringOffset = function (withMiliseconds = false) {
+	const timezoneOffsetMinutes = -this.getTimezoneOffset();
 	const pad = function (num) {
 		const norm = Math.floor(Math.abs(num));
 		return (norm < 10 ? '0' : '') + norm;
 	};
-	return this.getFullYear() +
-		'-' + pad(this.getMonth() + 1) +
-		'-' + pad(this.getDate()) +
-		'T' + pad(this.getHours()) +
-		':' + pad(this.getMinutes()) +
-		':' + pad(this.getSeconds()) +
-		dif + pad(tzo / 60) +
-		':' + pad(tzo % 60);
+	let result = '';
+	result += this.getFullYear();
+	result += '-' + pad(this.getMonth() + 1);
+	result += '-' + pad(this.getDate());
+	result += 'T' + pad(this.getHours());
+	result += ':' + pad(this.getMinutes());
+	result += ':' + pad(this.getSeconds());
+	if (withMiliseconds === true) {
+		result += '.' + (this.getMilliseconds() + '').padStart(3, '0');
+	}
+	result += (timezoneOffsetMinutes >= 0 ? '+' : '-');
+	result += pad(timezoneOffsetMinutes / 60)
+	result += ':' + pad(timezoneOffsetMinutes % 60);
+	return result;
 }
 
 /**
