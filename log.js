@@ -2,6 +2,7 @@ const FS = require('fs');
 const PATH = require('path');
 require('./functions.js');
 require('./functions.date.js');
+const STACKTRACE = require('stack-trace');
 
 console.log(new Date().toISOString());
 console.log(new Date().toISOStringOffset());
@@ -56,8 +57,11 @@ module.exports.init = function (params = {}) {
 	if (PARAMS.catchGlobalExceptions === true) {
 		process.on('uncaughtException', function (error) {
 			try {
-				module.exports.log(error.message + ' - more in exception log.', module.exports.ERROR);
-				module.exports.log(error.stack, module.exports.UNCAUGHT_EXCEPTION);
+				module.exports.log({
+					name: error.name,
+					message: error.message,
+					stack: STACKTRACE.parse(error),
+				}, module.exports.UNCAUGHT_EXCEPTION);
 			} catch (error) {
 				console.error('(Log) Error while catching "uncaughtException": ' + error.message + ' [This message is not saved]');
 			}
@@ -231,7 +235,6 @@ function getAllFiles(date) {
 	}
 	const files = [];
 	for (let severity in logsData) {
-		severity = parseInt(severity); // numeric indexes are converted to string so it needs to be re-converted back to number
 		const logParameters = defineLogParameters(severity);
 		files.push(PARAMS.logsPath + logParameters.fileFormat.formatUnicorn({'date': date.toISOStringDate()}) + '.' + fileExtension);
 	}

@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/DJTommek/node-pldr-log/issues"
   },
-  "homepage": "https://github.com/DJTommek/node-pldr-log#readme"
+  "homepage": "https://github.com/DJTommek/node-pldr-log#readme",
+  "dependencies": {
+    "stack-trace": "0.0.10"
+  }
 }
