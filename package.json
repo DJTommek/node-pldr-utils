@@ -1,0 +1,24 @@
+{
+  "name": "node-pldr-log",
+  "version": "1.0.0",
+  "description": "Custom logger for pldr node apps",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DJTommek/node-pldr-log.git"
+  },
+  "keywords": [
+    "node",
+    "log",
+    "logger"
+  ],
+  "author": "Tomas Palider (DJTommek)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DJTommek/node-pldr-log/issues"
+  },
+  "homepage": "https://github.com/DJTommek/node-pldr-log#readme"
+}
