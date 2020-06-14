@@ -4,7 +4,7 @@
  * @author https://stackoverflow.com/a/17415677/3334403
  * @return {string}
  */
-Date.prototype.toISOStringOffset = function (withMiliseconds = false) {
+Date.prototype.toISOStringLocale = function (milliseconds = false) {
 	const timezoneOffsetMinutes = -this.getTimezoneOffset();
 	const pad = function (num) {
 		const norm = Math.floor(Math.abs(num));
@@ -17,7 +17,7 @@ Date.prototype.toISOStringOffset = function (withMiliseconds = false) {
 	result += 'T' + pad(this.getHours());
 	result += ':' + pad(this.getMinutes());
 	result += ':' + pad(this.getSeconds());
-	if (withMiliseconds === true) {
+	if (milliseconds === true) {
 		result += '.' + (this.getMilliseconds() + '').padStart(3, '0');
 	}
 	result += (timezoneOffsetMinutes >= 0 ? '+' : '-');
@@ -31,20 +31,38 @@ Date.prototype.toISOStringOffset = function (withMiliseconds = false) {
  *
  * @return {string}
  */
-Date.prototype.toISOStringDate = function () {
-	return this.toISOStringOffset().slice(0, 10);
+Date.prototype.toISOStringLocaleDate = function () {
+	return this.toISOStringLocale().slice(0, 10);
 }
 
 /**
  * Get ISO 8601 time
  *
+ * @param {boolean} milliseconds
  * @param {boolean} offset true for returning with offset, false otherwise
  * @return {string}
  */
-Date.prototype.toISOStringTime = function (offset = true) {
+Date.prototype.toISOStringLocaleTime = function (milliseconds = false, offset = true) {
+	const time = this.toISOStringLocale(milliseconds).slice(11)
 	if (offset === true) {
-		return this.toISOStringOffset().slice(11);
+		return time;
 	} else {
-		return this.toISOStringOffset().slice(11, 19);
+		return time.slice(0, -6);
 	}
 }
+
+// @TODO Tests
+// const a = new Date();
+
+// a.toISOStringLocale(false);
+// a.toISOStringLocale(true);
+
+// a.toISOStringLocaleDate(false);
+// a.toISOStringLocaleDate(true);
+
+// a.toISOStringLocaleTime(false, false);
+// a.toISOStringLocaleTime(false, true);
+// a.toISOStringLocaleTime(true, false);
+// a.toISOStringLocaleTime(true, true);
+
+

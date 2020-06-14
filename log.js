@@ -5,7 +5,7 @@ require('./functions.date.js');
 const STACKTRACE = require('stack-trace');
 
 console.log(new Date().toISOString());
-console.log(new Date().toISOStringOffset());
+console.log(new Date().toISOStringLocale());
 
 module.exports.DEBUG = 'debug';
 module.exports.INFO = 'info';
@@ -189,7 +189,7 @@ module.exports.log = function (message, severity, params) {
 	const logParams = defineLogParameters(severity, params);
 	const now = new Date();
 	const contentJson = {
-		datetime: now.toISOStringOffset(true),
+		datetime: now.toISOStringLocale(true),
 		severity: severity,
 		content: message,
 	}
@@ -201,12 +201,12 @@ module.exports.log = function (message, severity, params) {
 	}
 	// Log into mainlog file
 	if (logParams.toMainLog) {
-		FS.appendFileSync(PARAMS.logsPath + baseLogFileFormat.formatUnicorn({'date': now.toISOStringDate()}) + '.' + fileExtension, content + '\n', 'utf8');
+		FS.appendFileSync(PARAMS.logsPath + baseLogFileFormat.formatUnicorn({'date': now.toISOStringLocaleDate()}) + '.' + fileExtension, content + '\n', 'utf8');
 	}
 	// Log into separated log file if requested
 	try {
 		if (logParams.fileFormat) {
-			const file = PARAMS.logsPath + logParams.fileFormat.formatUnicorn({'date': now.toISOStringDate()}) + '.' + fileExtension;
+			const file = PARAMS.logsPath + logParams.fileFormat.formatUnicorn({'date': now.toISOStringLocaleDate()}) + '.' + fileExtension;
 			FS.appendFileSync(file, content + '\n', 'utf8');
 		}
 	} catch (error) {
@@ -236,7 +236,7 @@ function getAllFiles(date) {
 	const files = [];
 	for (let severity in logsData) {
 		const logParameters = defineLogParameters(severity);
-		files.push(PARAMS.logsPath + logParameters.fileFormat.formatUnicorn({'date': date.toISOStringDate()}) + '.' + fileExtension);
+		files.push(PARAMS.logsPath + logParameters.fileFormat.formatUnicorn({'date': date.toISOStringLocaleDate()}) + '.' + fileExtension);
 	}
 	return files;
 }
