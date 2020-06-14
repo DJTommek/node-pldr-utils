@@ -3,6 +3,9 @@ const PATH = require('path');
 require('./functions.js');
 require('./functions.date.js');
 const STACKTRACE = require('stack-trace');
+const COLOR_RESET = '\x1b[0m';
+const COLOR_RED = '\x1b[31m';
+const COLOR_YELLOW = '\x1b[33m';
 
 console.log(new Date().toISOString());
 console.log(new Date().toISOStringLocale());
@@ -84,20 +87,20 @@ const logsData = {
 	[this.INFO]: {},
 	[this.WARNING]: {
 		fileFormat: '{date}_warning',
-		color: '\x1b[33m', // yellow
+		color: COLOR_YELLOW,
 	},
 	[this.ERROR]: {
 		fileFormat: '{date}_error',
-		color: '\x1b[31m', // red
+		color: COLOR_RED,
 	},
 	[this.FATAL_ERROR]: {
 		fileFormat: '{date}_error',
-		color: '\x1b[31m', // red
+		color: COLOR_RED,
 		quit: true,
 	},
 	[this.UNCAUGHT_EXCEPTION]: {
 		fileFormat: '{date}_exception',
-		color: '\x1b[31m', // red
+		color: COLOR_RED,
 	},
 	[this.MSG]: {
 		fileFormat: 'messages/message_{date}',
@@ -188,16 +191,15 @@ module.exports.log = function (message, severity, params) {
 
 	const logParams = defineLogParameters(severity, params);
 	const now = new Date();
-	const contentJson = {
+	const content = JSON.stringify({
 		datetime: now.toISOStringLocale(true),
 		severity: severity,
 		content: message,
-	}
-	const content = JSON.stringify(contentJson);
+	});
 
 	// Show log in console
 	if (logParams.console) {
-		console.log(logParams.color + content + '\x1b[0m');
+		console.log(logParams.color + content + COLOR_RESET);
 	}
 	// Log into mainlog file
 	if (logParams.toMainLog) {
@@ -210,8 +212,17 @@ module.exports.log = function (message, severity, params) {
 			FS.appendFileSync(file, content + '\n', 'utf8');
 		}
 	} catch (error) {
-		console.error('Cant log into separate log: [This message is not saved]');
-		console.error(error);
+		const content = JSON.stringify({
+			datetime: now.toISOStringLocale(true),
+			severity: module.exports.ERROR,
+			content: {
+				info: 'This message is not saved',
+				name: error.name,
+				message: error.message,
+				stack: STACKTRACE.parse(error),
+			}
+		});
+		console.error(COLOR_RED + content + COLOR_RESET);
 	}
 	// Exit application if necessary
 	if (logParams.quit === true) {
@@ -269,7 +280,7 @@ function checkAndCreateFolders() {
 				console.log('(Log) Folder "' + folder + '" was missing - created new. [This message is not saved]');
 			}
 		} catch (error) {
-			throw new Error('(Log) Error while creating folders to log: ' + error.message + ' [This message is not saved]');
+			throw new Error('Error while creating folders to log: ' + error.message + ' [This message is not saved]');
 		}
 	}
 }
