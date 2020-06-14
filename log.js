@@ -70,10 +70,10 @@ module.exports.init = function (params = {}) {
 	return this;
 };
 
-const baseLogFileFormat = '%(date)';
+const baseLogFileFormat = '%(date)s';
 const fileExtension = 'log';
 const defaultLogData = {
-	fileFormat: '%(date)',
+	fileFormat: '%(date)s',
 	toMainLog: true,
 	console: true,
 	quit: false,
@@ -83,39 +83,39 @@ const defaultLogData = {
 const logsData = {
 	[this.INFO]: {},
 	[this.WARNING]: {
-		fileFormat: '%(date)_warning',
+		fileFormat: '%(date)s_warning',
 		color: COLOR_YELLOW,
 	},
 	[this.ERROR]: {
-		fileFormat: '%(date)_error',
+		fileFormat: '%(date)s_error',
 		color: COLOR_RED,
 	},
 	[this.FATAL_ERROR]: {
-		fileFormat: '%(date)_error',
+		fileFormat: '%(date)s_error',
 		color: COLOR_RED,
 		quit: true,
 	},
 	[this.UNCAUGHT_EXCEPTION]: {
-		fileFormat: '%(date)_exception',
+		fileFormat: '%(date)s_exception',
 		color: COLOR_RED,
 	},
 	[this.MSG]: {
-		fileFormat: 'messages/message_%(date)',
+		fileFormat: 'messages/message_%(date)s',
 		mainLog: false,
 		console: false,
 	},
 	[this.WEBSERVER]: {
-		fileFormat: 'webserver/webserver_%(date)',
+		fileFormat: 'webserver/webserver_%(date)s',
 		mainLog: false,
 		console: false,
 	},
 	[this.SQL]: {
-		fileFormat: 'sql/sql_%(date)',
+		fileFormat: 'sql/sql_%(date)s',
 		mainLog: false,
 		console: false,
 	},
 	[this.DEBUG]: {
-		fileFormat: '%(date)_debug',
+		fileFormat: '%(date)s_debug',
 		mainLog: false,
 	},
 };
