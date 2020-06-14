@@ -8,7 +8,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/DJTommek/node-pldr-log.git"
+		"url": "git+https://github.com/DJTommek/node-pldr-utils.git"
 	},
 	"keywords": [
 		"node",
@@ -19,9 +19,9 @@
 	"author": "Tomas Palider (DJTommek)",
 	"license": "ISC",
 	"bugs": {
-		"url": "https://github.com/DJTommek/node-pldr-log/issues"
+		"url": "https://github.com/DJTommek/node-pldr-utils/issues"
 	},
-	"homepage": "https://github.com/DJTommek/node-pldr-log#readme",
+	"homepage": "https://github.com/DJTommek/node-pldr-utils",
 	"dependencies": {
 		"sprintf-js": "^1.1.2",
 		"stack-trace": "0.0.10"

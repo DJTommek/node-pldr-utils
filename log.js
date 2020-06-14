@@ -1,6 +1,6 @@
 const FS = require('fs');
 const PATH = require('path');
-const sprintf = require('sprintf-js');
+const sprintf = require('sprintf-js').sprintf;
 
 const STACKTRACE = require('stack-trace');
 const COLOR_RESET = '\x1b[0m';
