@@ -1,27 +1,29 @@
 {
-  "name": "node-pldr-log",
-  "version": "1.0.0",
-  "description": "Custom logger for pldr node apps",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/DJTommek/node-pldr-log.git"
-  },
-  "keywords": [
-    "node",
-    "log",
-    "logger"
-  ],
-  "author": "Tomas Palider (DJTommek)",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/DJTommek/node-pldr-log/issues"
-  },
-  "homepage": "https://github.com/DJTommek/node-pldr-log#readme",
-  "dependencies": {
-    "stack-trace": "0.0.10"
-  }
+	"name": "node-pldr-utils",
+	"version": "1.0.0",
+	"description": "Custom utils used in all pldr node apps",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/DJTommek/node-pldr-log.git"
+	},
+	"keywords": [
+		"node",
+		"log",
+		"logger",
+		"utils"
+	],
+	"author": "Tomas Palider (DJTommek)",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/DJTommek/node-pldr-log/issues"
+	},
+	"homepage": "https://github.com/DJTommek/node-pldr-log#readme",
+	"dependencies": {
+		"sprintf-js": "^1.1.2",
+		"stack-trace": "0.0.10"
+	}
 }

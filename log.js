@@ -1,14 +1,11 @@
 const FS = require('fs');
 const PATH = require('path');
-require('./functions.js');
-require('./functions.date.js');
+const sprintf = require('sprintf-js');
+
 const STACKTRACE = require('stack-trace');
 const COLOR_RESET = '\x1b[0m';
 const COLOR_RED = '\x1b[31m';
 const COLOR_YELLOW = '\x1b[33m';
-
-console.log(new Date().toISOString());
-console.log(new Date().toISOStringLocale());
 
 module.exports.DEBUG = 'debug';
 module.exports.INFO = 'info';
@@ -73,10 +70,10 @@ module.exports.init = function (params = {}) {
 	return this;
 };
 
-const baseLogFileFormat = '{date}';
+const baseLogFileFormat = '%(date)';
 const fileExtension = 'log';
 const defaultLogData = {
-	fileFormat: '{date}',
+	fileFormat: '%(date)',
 	toMainLog: true,
 	console: true,
 	quit: false,
@@ -86,39 +83,39 @@ const defaultLogData = {
 const logsData = {
 	[this.INFO]: {},
 	[this.WARNING]: {
-		fileFormat: '{date}_warning',
+		fileFormat: '%(date)_warning',
 		color: COLOR_YELLOW,
 	},
 	[this.ERROR]: {
-		fileFormat: '{date}_error',
+		fileFormat: '%(date)_error',
 		color: COLOR_RED,
 	},
 	[this.FATAL_ERROR]: {
-		fileFormat: '{date}_error',
+		fileFormat: '%(date)_error',
 		color: COLOR_RED,
 		quit: true,
 	},
 	[this.UNCAUGHT_EXCEPTION]: {
-		fileFormat: '{date}_exception',
+		fileFormat: '%(date)_exception',
 		color: COLOR_RED,
 	},
 	[this.MSG]: {
-		fileFormat: 'messages/message_{date}',
+		fileFormat: 'messages/message_%(date)',
 		mainLog: false,
 		console: false,
 	},
 	[this.WEBSERVER]: {
-		fileFormat: 'webserver/webserver_{date}',
+		fileFormat: 'webserver/webserver_%(date)',
 		mainLog: false,
 		console: false,
 	},
 	[this.SQL]: {
-		fileFormat: 'sql/sql_{date}',
+		fileFormat: 'sql/sql_%(date)',
 		mainLog: false,
 		console: false,
 	},
 	[this.DEBUG]: {
-		fileFormat: '{date}_debug',
+		fileFormat: '%(date)_debug',
 		mainLog: false,
 	},
 };
@@ -203,12 +200,12 @@ module.exports.log = function (message, severity, params) {
 	}
 	// Log into mainlog file
 	if (logParams.toMainLog) {
-		FS.appendFileSync(PARAMS.logsPath + baseLogFileFormat.formatUnicorn({'date': now.toISOStringLocaleDate()}) + '.' + fileExtension, content + '\n', 'utf8');
+		FS.appendFileSync(PARAMS.logsPath + sprintf(baseLogFileFormat, {'date': now.toISOStringLocaleDate()}) + '.' + fileExtension, content + '\n', 'utf8');
 	}
 	// Log into separated log file if requested
 	try {
 		if (logParams.fileFormat) {
-			const file = PARAMS.logsPath + logParams.fileFormat.formatUnicorn({'date': now.toISOStringLocaleDate()}) + '.' + fileExtension;
+			const file = PARAMS.logsPath + sprintf(logParams.fileFormat, {'date': now.toISOStringLocaleDate()}) + '.' + fileExtension;
 			FS.appendFileSync(file, content + '\n', 'utf8');
 		}
 	} catch (error) {
@@ -247,7 +244,7 @@ function getAllFiles(date) {
 	const files = [];
 	for (let severity in logsData) {
 		const logParameters = defineLogParameters(severity);
-		files.push(PARAMS.logsPath + logParameters.fileFormat.formatUnicorn({'date': date.toISOStringLocaleDate()}) + '.' + fileExtension);
+		files.push(PARAMS.logsPath + sprintf(logParameters.fileFormat, {'date': date.toISOStringLocaleDate()}) + '.' + fileExtension);
 	}
 	return files;
 }
