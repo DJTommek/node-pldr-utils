@@ -1,6 +1,6 @@
 {
 	"name": "node-pldr-utils",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Custom utils used in all pldr node apps",
 	"main": "index.js",
 	"scripts": {
