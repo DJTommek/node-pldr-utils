@@ -1,3 +1,25 @@
+Date.prototype.human = function (returnObject) {
+	const res = {
+		milisecond: (this.getMilliseconds() + '').padStart(3, '0') + '',
+		second: (this.getSeconds() + '').padStart(2, '0') + '',
+		minute: (this.getMinutes() + '').padStart(2, '0') + '',
+		hour: (this.getHours() + '').padStart(2, '0') + '',
+		day: (this.getDate() + '').padStart(2, '0') + '',
+		month: (this.getMonth() + 1 + '').padStart(2, '0') + '',
+		year: (this.getFullYear() + '').padStart(2, '0') + ''
+	}
+	res.date = res.year + '.' + res.month + '.' + res.day;
+	res.time = res.hour + ':' + res.minute + ':' + res.second;
+	res.toString = function () {
+		return (res.date + ' ' + res.time + '.' + res.milisecond);
+	}
+	if (returnObject === true) {
+		return res;
+	} else {
+		return res + '';
+	}
+}
+
 /**
  * Check, if value can be converted to number
  *
